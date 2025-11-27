@@ -1,0 +1,285 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.login-btn-shadow:hover {
+    box-shadow: 0 0 15px 0 #ffe066 !important;
+}
+body {
+    background-image: url('../images/wall_background.png');
+    background-size: 500px;
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    color: white;
+}
+
+.page-content {
+    padding-top: 170px;
+    padding-bottom: 60px;
+}
+
+
+/* Navbar */
+.custom-navbar {
+    position: fixed;
+    top: 2.5vh;
+    left: 2vw;
+    height: 180px;
+    width: 180px;
+    background-color: #212529;
+    border-radius: 60%;
+    transition: all 1.1s ease;
+    overflow: hidden;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+    padding: 0 1vw;
+}
+
+    .custom-navbar:hover {
+        width: 35vw;
+        min-width: 470px;
+        border-radius: 60px;
+    }
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+}
+
+.logo-img {
+    height: 140px;
+    width: 140px;
+    left: 5px;
+    object-fit: contain;
+    border-radius: 40%;
+}
+
+.nav-items {
+    display: none;
+    gap: 1.0vw;
+    opacity: 0;
+  
+    
+}
+
+.custom-navbar:hover .nav-items {
+    opacity: 1;
+    display: flex;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 24px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .nav-link:hover {
+        background-color: #6eb0cc;
+        color: white;
+        opacity: 0.8;
+    }
+
+    .nav-link.active {
+        background-color: #0d6efd;
+        opacity: 1;
+        color: white;
+    }
+
+/* Profile bar */
+.coin-panel {
+    position: fixed;
+    top: 2.5vh;
+    right: 2vw;
+    height: 180px;
+    width: 180px;
+    background-color: #212529;
+    border-radius: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 998;
+}
+
+    .coin-panel:hover {
+        width: 31vh;
+        border-radius: 90px;
+        padding: 0 10px;
+    }
+
+.coin-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: white;
+    text-align: center;
+    position: relative;
+    transition: all 2.7s ease;
+}
+
+
+
+.coin-username {
+    font-size: 1.8vh;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.7s ease;
+}
+
+.coin-panel:hover .coin-username {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.coin-username.login {
+    color: #28a745;
+    opacity: 1;
+    font-size: 35px;
+    transform: translateY(-2px);
+    margin: 0;
+}
+.coin-panel:hover .coin-username.login {
+    color: #2db74d;
+    text-shadow: 0 0 5px #28a745bb, 0 0 15px #51be93cb;
+    transform: translateY(-4px) scale(1.1);
+    transition: transform 0.3s ease-in;
+}
+
+.coin-panel:hover .coin-row {
+    transform: translateY(17px);
+    font-size: 1.5vh;
+}
+
+
+.coin-icon {
+    height: 3.5vh;
+    width: auto;
+}
+
+.coin-label {
+    font-size: 2.3vh;
+    transition: transform 0.3s ease, font-size 0.3s ease;
+    color: white;
+}
+
+
+.coin-panel:hover .coin-label {
+    transform: translateY(1px);
+}
+
+/*Game Card*/
+
+.game-card {
+    background-color: #1a1a1a;
+    border-radius: 15px;
+    width: 250px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #333;
+    transition: transform 0.3s;
+}
+
+    .game-card:hover {
+        transform: translateY(-5px); /* Hover efekti */
+        border-color: #00a8ff;
+    }
+
+.card-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 15px;
+    color: white;
+}
+
+/* Çalışan Buton */
+.btn-play {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #00a8ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Çalışmayan Buton (Gri) */
+.btn-disabled {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #444; /* Gri renk */
+    color: #888;
+    text-decoration: none;
+    border-radius: 50px;
+    margin-top: 10px;
+    cursor: not-allowed; /* Tıklanmaz imleci */
+}
+
+/* Home page effects*/
+.card:hover {
+    transform: scale(1.1);
+    transition: transform 0.6s ease;
+    overflow: hidden;
+}
+
+    .card:hover .card-img-top {
+        transform: scale(1.01);
+        transition: transform 0.6s ease;
+        
+    }
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    transform: scale(1.05);
+    transition: transform 0.3s ease, background-color 0.5s ease;
+}
+

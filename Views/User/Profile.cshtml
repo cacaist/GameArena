@@ -1,0 +1,106 @@
+﻿@model GameArena.Models.User
+@{
+    ViewData["Title"] = "Profile";
+    var rewards = ViewBag.Rewards as List<GameArena.Models.UserReward>;
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-lg text-center border-0 rounded-4 bg-dark text-light">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Welcome, <span class="text-info">@Model.Username</span></h2>
+                    <a href="/Store/Store" class="text-decoration-none">
+                        <span class="badge bg-success fs-5 p-2">
+                            Coin Case: @Model.Score
+                            <img src="/images/coin.png" alt="Coin" style="width: 26px; height: 26px; margin-left: 6px;" />
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="/User/Logout" class="btn btn-outline-danger px-4 py-2 fs-5 rounded-pill">
+            Pass Away
+        </a>
+    </div>
+    <h3 class="text-start mb-3">Chest</h3>
+    <hr style="border-top: 2px solid #0d6efd; border-radius: 2px;" />
+
+    @if (rewards == null || rewards.Count == 0)
+    {
+        <div class="alert alert-warning text-center">You haven't purchased any ıtem yet.</div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            @foreach (var ur in rewards)
+            {
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-sm border-primary border-2 h-100 rounded-4 reward-card"
+                         style="cursor: pointer;"
+                         data-bs-toggle="modal"
+                         data-bs-target="#rewardModal"
+                         data-name="@ur.Reward.Name"
+                         data-cost="@ur.Reward.Cost"
+                         data-description="@ur.Reward.Description"
+                         data-image="/Images/@ur.Reward.ImageFileName">
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">@ur.Reward.Name</h5>
+                            <p class="card-text">
+                                <span class="badge bg-primary fs-6">Cost: @ur.Reward.Cost pts</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+    <hr class="border border-light mt-4" />
+
+</div>
+
+<div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 250px;">
+        <div class="modal-content bg-dark text-light rounded-4 border border-info">
+            <div class="modal-body text-center px-3 py-4">
+
+                <img id="modalRewardImage" src="" class="img-fluid rounded mb-3" style="max-height: 200px;" alt="Item Image" />
+                <h4 id="modalRewardName" class="mb-2 text-info"></h4>
+                <p id="modalRewardDescription" class="text-white-50 small px-3"></p>
+
+                <div class="text-end d-flex justify-content-between align-items-center mt-4 px-3">
+
+                    <div id="modalRewardCost" class="d-flex align-items-center gap-2 text-light">
+                        <img src="/images/coin.png" alt="coin" style="height: 24px;" />
+                        <span id="modalCoinValue" class="fw-semibold fs-6">0</span>
+                    </div>
+
+                    <button class="btn btn-secondary rounded-pill px-4" disabled>Sell Item</button>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.reward-card').forEach(card => {
+        card.addEventListener('click', function () {
+            const name = this.getAttribute('data-name');
+            const description = this.getAttribute('data-description');
+            const image = this.getAttribute('data-image');
+            const cost = this.getAttribute('data-cost');
+
+            document.getElementById('modalRewardName').textContent = name;
+            document.getElementById('modalRewardDescription').textContent = description;
+            document.getElementById('modalRewardImage').src = image;
+            document.getElementById('modalCoinValue').textContent = cost;
+        });
+    });
+</script>

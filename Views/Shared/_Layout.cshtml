@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GameArena</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GameArena.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <header>
+        <nav class="custom-navbar">
+            <a class="logo-link" href="/Home">
+                <img src="/images/logo.png" alt="GameArena Logo" class="logo-img" />
+            </a>
+
+            <div class="nav-items">
+                <a href="/Home" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">Home</a>
+                <a href="/Store/Store" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Store" ? "active" : "")">Store</a>
+                <a href="/User/Profile" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Profile" ? "active" : "")">Profile</a>
+            </div>
+        </nav>
+
+        <a href="@(Context.Session.GetInt32("UserId") != null ? "/User/Profile" : "/User/Login")" class="coin-panel">
+
+            <div class="coin-inner" style="@(Context.Session.GetInt32("UserId") != null ? "" : "justify-content: center;")">
+
+                <span class="coin-username @(Context.Session.GetInt32("UserId") != null ? "" : "login")">
+                    @(Context.Session.GetInt32("UserId") != null ? ViewBag.Username : "Log In")
+                </span>
+
+                @if (Context.Session.GetInt32("UserId") != null)
+                {
+                    <div class="coin-row">
+                        <img src="/images/coin.png" alt="Coin" class="coin-icon" />
+                        <span class="coin-label" id="coinLabel">
+                            @(ViewBag.Score ?? 0)
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </a>
+
+
+
+    </header>
+    <div class="page-content">
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    </div>
+
+    <footer class="border-top footer text-muted" style="background-color: lightgray;">
+        <div class="container">
+            &copy; 2025 - GameArena - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+</body>
+</html>

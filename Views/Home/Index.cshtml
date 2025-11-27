@@ -1,0 +1,35 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Choose Your Desider</h2>
+    @model List<GameArena.Models.Game>
+
+    <div class="games-container" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 50px;">
+
+        @foreach (var game in Model)
+        {
+            <div class="game-card">
+                <img src="@game.ImageUrl" alt="@game.Name" class="card-img">
+
+                <div class="card-content">
+                    <h3>@game.Name</h3>
+                    <p>@game.Description</p>
+
+                    @if (game.GameUrl == "#")
+                    {
+                        <a class="btn-disabled">Soon</a>
+                    }
+                    else
+                    {
+                        <a href="@game.GameUrl" class="btn-play">Play</a>
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

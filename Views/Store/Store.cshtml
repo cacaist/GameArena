@@ -1,0 +1,44 @@
+﻿@model List<GameArena.Models.Reward>
+@{
+    ViewData["Title"] = "Reward Store";
+}
+
+<h2 class="text-center my-4 text-info fw-bold">Reward Store</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info text-center rounded-pill py-2 fw-semibold">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var reward in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm border-primary border-2 rounded-4 bg-dark text-light">
+
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <h5 class="card-title text-warning fw-bold">@reward.Name</h5>
+
+                        
+                        <p class="card-text">
+                            <span class="badge bg-info text-dark fs-6 px-3 py-2">
+                                Cost: @reward.Cost 
+                                <img src="/images/coin.png" alt="Coin" style="height: 22px; margin-left: 4px;" />
+                            </span>
+                        </p>
+
+                        <form method="post" asp-controller="Store" asp-action="Buy">
+                            <input type="hidden" name="rewardId" value="@reward.Id" />
+                            <button type="submit" class="btn btn-outline-success rounded-pill mt-2">
+                                <i class="bi bi-cart-plus me-1"></i> Buy
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

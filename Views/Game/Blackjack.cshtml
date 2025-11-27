@@ -1,0 +1,251 @@
+﻿@{
+    ViewData["Title"] = "Blackjack Game";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Blackjack Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            position: relative;
+        }
+
+        .card {
+            width: 50%;
+            margin: 5px;
+        }
+
+        #buttons button {
+            margin: 5px;
+            padding: 10px;
+        }
+
+        .score {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        #rules {
+            position: relative;
+            margin: 20px auto;
+            width: 60%;
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 1%;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="mt-4">Blackjack Game</h1>
+
+    <div id="game-area" class="d-flex flex-column align-items-center mt-4">
+        <h2>Dealer's Hand</h2>
+        <div id="dealer-cards" class="d-flex justify-content-center"></div>
+        <p id="dealer-score" class="score">Card total: 0</p>
+
+        <h2>Your Hand</h2>
+        <div id="player-cards" class="d-flex justify-content-center"></div>
+        <p id="player-score" class="score">Card total: 0</p>
+    </div>
+
+    <div id="buttons" class="mb-3">
+        <button onclick="startGame()" class="btn btn-primary">New Game</button>
+        <button onclick="hit()" class="btn btn-success">Hit</button>
+        <button onclick="stand()" class="btn btn-warning">Stand</button>
+    </div>
+
+    <p id="result" style="font-size: larger; font-weight: bold;"></p>
+
+    <div id="rules" class="mt-4">
+        <h3>Game Rules</h3>
+        <ul class="text-start">
+            <li>The goal is to get as close to 21 as possible without exceeding it.</li>
+            <li>You can "Hit" to draw another card.</li>
+            <li>You can "Stand" to end your turn.</li>
+            <li>Face cards (King, Queen, Jack) are worth 10 points.</li>
+            <li>Aces are worth 1 or 11 points, whichever is more favorable.</li>
+            <li>The dealer must draw until their score is at least 17.</li>
+            <li>If your score exceeds 21, you lose (bust).</li>
+        </ul>
+    </div>
+
+    <script>
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        let deckId;
+        let playerHand = [], dealerHand = [];
+
+        async function startGame() {
+            const res = await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=3');
+            const data = await res.json();
+            deckId = data.deck_id;
+            playerHand = [];
+            dealerHand = [];
+            document.getElementById('player-cards').innerHTML = '';
+            document.getElementById('dealer-cards').innerHTML = '';
+            document.getElementById('result').innerText = '';
+            document.querySelector('button[onclick="hit()"]').disabled = false;
+            document.querySelector('button[onclick="stand()"]').disabled = false;
+            updateScores();
+            await drawCards(2, 'player');
+            await drawCards(1, 'dealer');
+        }
+
+        async function drawCards(count, who) {
+            const res = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${count}`);
+            const data = await res.json();
+            const hand = who === 'player' ? playerHand : dealerHand;
+
+            data.cards.forEach(card => {
+                hand.push(card);
+                const img = document.createElement('img');
+                img.src = card.image;
+                img.classList.add('card');
+                document.getElementById(`${who}-cards`).appendChild(img);
+            });
+            updateScores();
+        }
+
+        async function hit() {
+            await drawCards(1, 'player');
+            if (getHandValue(playerHand) > 21) {
+                endGame('You busted! Dealer wins.');
+            }
+        }
+
+        async function stand() {
+            while (getHandValue(dealerHand) < 17) {
+                await delay(1234);
+                await drawCards(1, 'dealer');
+            }
+            checkWinner();
+        }
+
+        function getHandValue(hand) {
+            let value = 0;
+            let aceCount = 0;
+            hand.forEach(card => {
+                let cardValue = card.value;
+                if (['KING', 'QUEEN', 'JACK'].includes(cardValue)) cardValue = 10;
+                else if (cardValue === 'ACE') {
+                    cardValue = 11;
+                    aceCount++;
+                } else {
+                    cardValue = parseInt(cardValue);
+                }
+                value += cardValue;
+            });
+            while (value > 21 && aceCount > 0) {
+                value -= 10;
+                aceCount--;
+            }
+            return value;
+        }
+
+        function updateScores() {
+            document.getElementById('player-score').innerText = `Card total: ${getHandValue(playerHand)}`;
+            document.getElementById('dealer-score').innerText = `Card total: ${getHandValue(dealerHand)}`;
+        }
+
+        function checkWinner() {
+            const playerScore = getHandValue(playerHand);
+            const dealerScore = getHandValue(dealerHand);
+
+            if (dealerScore > 21 || playerScore > dealerScore) {
+                endGame('You win!');
+            } else if (playerScore < dealerScore) {
+                endGame('Dealer wins.');
+            } else {
+                endGame("It's a tie!");
+            }
+        }
+
+                function endGame(message) {
+            document.getElementById('result').innerText = message;
+            document.querySelector('button[onclick="hit()"]').disabled = true;
+            document.querySelector('button[onclick="stand()"]').disabled = true;
+
+            let points = 0;
+
+            if (message === 'You win!') {
+                points = 5;
+            } else if (message === 'Dealer wins.' || message === 'You busted! Dealer wins.') {
+                points = -5;
+            } else {
+                points = 0;
+            }
+
+            if (points !== 0) {
+                fetch('/Game/AddScore', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ points: points })
+                })
+                .then(res => res.json())
+                .then(data => {
+                if (data.success) {
+                    if (points > 0) {
+                        showGameToast(`🎉 You won! +${points} coin${points > 1 ? 's' : ''} earned!`, 'win');
+                    } else if (points < 0) {
+                        showGameToast(`💀 You lost... ${Math.abs(points)} coin${Math.abs(points) > 1 ? 's' : ''} taken.`, 'lose');
+                    } else {
+                        showGameToast(`🤝 It's a tie!`, 'tie');
+                    }
+                }
+                        
+                })
+                .catch(err => {
+                    console.error('Score update failed:', err.message);
+                });
+            }
+        }
+
+
+        function showGameToast(message, type) {
+            const toast = document.getElementById("gameToast");
+            const toastMsg = document.getElementById("gameToastMsg");
+
+            toast.className = "toast border-0 shadow-lg";
+            if (type === "win") {
+                toast.classList.add("text-bg-success");
+            } else if (type === "lose") {
+                toast.classList.add("text-bg-danger");
+            } else {
+                toast.classList.add("text-bg-secondary");
+            }
+
+            toastMsg.textContent = message;
+
+            const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+            bsToast.show();
+        }
+
+
+    </script>
+
+    
+    <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050;">
+        <div id="gameToast" class="toast align-items-center text-bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold fs-5" id="gameToastMsg">
+                    🎉 You won! +5 Coins!
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>
