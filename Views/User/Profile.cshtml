@@ -14,7 +14,7 @@
                     <a href="/Store/Store" class="text-decoration-none">
                         <span class="badge bg-success fs-5 p-2">
                             Coin Case: @Model.Score
-                            <img src="/images/coin.png" alt="Coin" style="width: 26px; height: 26px; margin-left: 6px;" />
+                            <img src="@Url.Blob("coin.png") alt="Coin" style="width: 26px; height: 26px; margin-left: 6px;" />
                         </span>
                     </a>
                 </div>
@@ -46,7 +46,7 @@
                          data-name="@ur.Reward.Name"
                          data-cost="@ur.Reward.Cost"
                          data-description="@ur.Reward.Description"
-                         data-image="/Images/@ur.Reward.ImageFileName">
+                         data-image="/images/"@ur.Reward.ImageFileName">
 
                         <div class="card-body text-center">
                             <h5 class="card-title fw-bold">@ur.Reward.Name</h5>
@@ -76,7 +76,7 @@
                 <div class="text-end d-flex justify-content-between align-items-center mt-4 px-3">
 
                     <div id="modalRewardCost" class="d-flex align-items-center gap-2 text-light">
-                        <img src="/images/coin.png" alt="coin" style="height: 24px;" />
+                        <img src="@Url.Blob("coin.png") alt="coin" style="height: 24px;" />
                         <span id="modalCoinValue" class="fw-semibold fs-6">0</span>
                     </div>
 

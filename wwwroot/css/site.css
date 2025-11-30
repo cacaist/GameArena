@@ -34,7 +34,7 @@ body {
     box-shadow: 0 0 15px 0 #ffe066 !important;
 }
 body {
-    background-image: url('../images/wall_background.png');
+    background-image: url("https://cacaistimages.blob.core.windows.net/img/wall_background.png");
     background-size: 500px;
     background-position: center;
     background-repeat: repeat;
@@ -283,3 +283,28 @@ body {
     transition: transform 0.3s ease, background-color 0.5s ease;
 }
 
+/* Footer Alanı */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 130px; 
+    
+    background-image: url('https://cacaistimages.blob.core.windows.net/img/Footer_Background.png');
+    background-repeat: repeat-x;
+    background-size: 205px 100%; 
+    background-position: bottom center;
+    color: white; 
+    border-top: none;
+    background-color: transparent;
+}
+    .footer a {
+        color: #ffd700;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }

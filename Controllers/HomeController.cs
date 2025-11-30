@@ -45,7 +45,7 @@ namespace GameArena.Controllers
                     Id = 1,
                     Name = "Blackjack",
                     Description = "Hit the 21",
-                    ImageUrl = "/images/blackjack.jpg",
+                    //ImageUrl = "images/Blackjack.png"
                     GameUrl = "/Game/Blackjack" //
                 },
 
@@ -55,7 +55,7 @@ namespace GameArena.Controllers
                     Id = 2,
                     Name = "Space Wars",
                     Description = "Uzay savaþý çok yakýnda...",
-                    ImageUrl = "/images/space.png",
+                   // ImageUrl = "@Url.Blob("space.png",
                     GameUrl = "#"
                 },
 
@@ -65,7 +65,7 @@ namespace GameArena.Controllers
                     Id = 3,
                     Name = "Racing Pro",
                     Description = "Pistlerin tozunu attýr!",
-                    ImageUrl = "/images/racing.png",
+                    //ImageUrl = "@Url.Blob("racing.png",
                     GameUrl = "#" // Link yok
                 }
             };

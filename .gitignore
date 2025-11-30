@@ -1,0 +1,26 @@
+﻿################################################################################
+# Bu .gitignore dosyası Microsoft(R) Visual Studio tarafından otomatik olarak oluşturulmuştur.
+################################################################################
+
+# Build
+bin/
+obj/
+Images/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Cache / DB
+*.db
+*.sqlite
+*.cache
+
+# Copilot
+CopilotIndices/
+.vscode/
+
+# Diğer otomatik dosyalar
+ProjectEvaluation/
+FileContentIndex/
